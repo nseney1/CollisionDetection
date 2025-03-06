@@ -9,6 +9,7 @@
 #define WHITE 0xffffffff
 #define YELLOW 0xffffff00
 #define BLACK 0x00000000
+#define RED 0xFF4B33
 
 class Circle {
 	public: 
@@ -35,9 +36,9 @@ void FillCircle(SDL_Surface* surface, struct Circle circle, Uint32 color) {
 
 bool collisionDetection(Circle circleA, Circle circleB) {
 	if ((circleA.x - (circleA.radius + circleB.radius) < circleB.x &&
-			circleA.x + (circleA.radius + circleB.radius) > circleB.x) &&
-			circleA.y - (circleA.radius + circleB.radius) < circleB.y &&
-			circleA.y + (circleA.radius + circleB.radius) > circleB.y){
+		circleA.x + (circleA.radius + circleB.radius) > circleB.x) &&
+		circleA.y - (circleA.radius + circleB.radius) < circleB.y &&
+		circleA.y + (circleA.radius + circleB.radius) > circleB.y){
 		return true;
 	}
 	return false;
@@ -45,7 +46,7 @@ bool collisionDetection(Circle circleA, Circle circleB) {
 
 int main() {
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Window* window = SDL_CreateWindow("RayTracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
+	SDL_Window* window = SDL_CreateWindow("CollisionDetection", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0);
 
 	SDL_Surface* surface = SDL_GetWindowSurface(window);
 
@@ -70,14 +71,13 @@ int main() {
 
 		SDL_FillRect(surface, &eraseRect, BLACK);
 		FillCircle(surface, circle, YELLOW);
+
 		if (collisionDetection(shadowCircle, circle)) {
 			FillCircle(surface, shadowCircle, YELLOW);
 		} else {
 			FillCircle(surface, shadowCircle, WHITE);
 		}
 
-		circle.logCircleInfo();
-		shadowCircle.logCircleInfo();
 		collisionDetection(shadowCircle, circle);
 
 		SDL_UpdateWindowSurface(window);
