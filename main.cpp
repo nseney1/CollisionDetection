@@ -38,10 +38,8 @@ bool collisionDetection(Circle circleA, Circle circleB) {
 			circleA.x + (circleA.radius + circleB.radius) > circleB.x) &&
 			circleA.y - (circleA.radius + circleB.radius) < circleB.y &&
 			circleA.y + (circleA.radius + circleB.radius) > circleB.y){
-		printf("true");
 		return true;
 	}
-	printf("false");
 	return false;
 }
 
@@ -51,8 +49,8 @@ int main() {
 
 	SDL_Surface* surface = SDL_GetWindowSurface(window);
 
-	struct Circle circle = { 200, 200, 80 };
-	struct Circle shadowCircle { 650, 300, 140 };
+	struct Circle circle = { 150, 200, 80 };
+	struct Circle shadowCircle { 450, 300, 140 };
 
 	SDL_Rect eraseRect = (SDL_Rect) { 0, 0, WIDTH, HEIGHT };
 
@@ -72,7 +70,11 @@ int main() {
 
 		SDL_FillRect(surface, &eraseRect, BLACK);
 		FillCircle(surface, circle, YELLOW);
-		FillCircle(surface, shadowCircle, WHITE);
+		if (collisionDetection(shadowCircle, circle)) {
+			FillCircle(surface, shadowCircle, YELLOW);
+		} else {
+			FillCircle(surface, shadowCircle, WHITE);
+		}
 
 		circle.logCircleInfo();
 		shadowCircle.logCircleInfo();
